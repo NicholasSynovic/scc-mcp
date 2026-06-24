@@ -7,7 +7,11 @@ in ``models``, and output rendering in ``format``.
 
 from fastmcp import FastMCP
 
+from .tools import summary
+
 mcp = FastMCP("scc_mcp")
+
+summary.register(mcp)
 
 
 def main() -> None:
