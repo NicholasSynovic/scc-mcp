@@ -7,12 +7,13 @@ in ``models``, and output rendering in ``format``.
 
 from fastmcp import FastMCP
 
-from .tools import byfile, summary
+from .tools import byfile, languages, summary
 
 mcp = FastMCP("scc_mcp")
 
 summary.register(mcp)
 byfile.register(mcp)
+languages.register(mcp)
 
 
 def main() -> None:

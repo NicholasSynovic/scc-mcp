@@ -99,6 +99,35 @@ def run_scc(
     return proc.stdout
 
 
+def run_scc_no_path(
+    args: list[str],
+    timeout: float = DEFAULT_TIMEOUT,
+) -> str:
+    """Run ``scc`` with flags that take no target path (e.g. ``--languages``).
+
+    Raises:
+        SccError: if scc is missing, times out, or exits non-zero.
+    """
+    scc = find_scc()
+    cmd = [scc, *args]
+
+    try:
+        proc = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            check=False,
+        )
+    except subprocess.TimeoutExpired as exc:
+        raise SccError(f"scc timed out after {timeout}s: {' '.join(cmd)}") from exc
+
+    if proc.returncode != 0:
+        stderr = proc.stderr.strip() or "(no stderr)"
+        raise SccError(f"scc exited with status {proc.returncode}: {stderr}")
+    return proc.stdout
+
+
 def run_scc_json(
     args: list[str],
     path: str | None = None,
