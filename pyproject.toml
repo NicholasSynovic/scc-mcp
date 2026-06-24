@@ -7,3 +7,10 @@ requires-python = ">=3.14"
 dependencies = [
     "fastmcp>=3.4.2",
 ]
+
+[project.scripts]
+scc-mcp = "scc_mcp.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

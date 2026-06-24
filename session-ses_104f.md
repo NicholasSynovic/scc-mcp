@@ -2,7 +2,7 @@
 
 **Session ID:** ses_104f2e880ffejUW7EtVwNVx374
 **Created:** 6/24/2026, 2:13:19 PM
-**Updated:** 6/24/2026, 2:30:18 PM
+**Updated:** 6/24/2026, 2:37:30 PM
 
 ---
 
@@ -2460,6 +2460,3179 @@ Note: `uv` also created `.venv` and `uv.lock`. No scaffolding added; `scc` untou
 **3. `AGENTS.md`** — updated to reflect the `uv`/`fastmcp` setup, real commands, and the key gotchas (correct import path for standalone fastmcp vs the SDK, external `scc` binary, path-access rule, useful scc JSON formats).
 
 The first three requirements map to tools 1-3 as noted inline. Server implementation remains a follow-up when you're ready.
+
+---
+
+## User
+
+Please review this directory again. Implement a small MCP service in the main.py file that simply returns Hello world when called.
+
+---
+
+## Assistant (Plan · Claude Opus 4.8 · 2.1s)
+
+---
+
+## User
+
+Please review this directory again. Implement a small MCP service in the main.py file that simply returns Hello world when called.
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 3.5s)
+
+**Tool: bash**
+
+**Input:**
+```json
+{
+  "command": "ls -la /home/nicholas/Documents/projects/scc-mcp",
+  "description": "Re-list repo directory"
+}
+```
+
+**Output:**
+```
+total 272
+drwxrwxr-x  5 nicholas nicholas   4096 Jun 24 14:32 .
+drwxrwxr-x 19 nicholas nicholas   4096 Jun 24 14:11 ..
+drwxrwxr-x  8 nicholas nicholas   4096 Jun 24 14:31 .git
+-rw-rw-r--  1 nicholas nicholas   4628 Jun 24 14:11 .gitignore
+-rw-rw-r--  1 nicholas nicholas      5 Jun 24 14:18 .python-version
+drwxrwxr-x  4 nicholas nicholas   4096 Jun 24 14:29 .venv
+-rw-rw-r--  1 nicholas nicholas   1329 Jun 24 14:30 AGENTS.md
+-rw-rw-r--  1 nicholas nicholas   1503 Jun 24 14:11 LICENSE
+-rw-rw-r--  1 nicholas nicholas     80 Jun 24 14:11 README.md
+-rw-rw-r--  1 nicholas nicholas   2412 Jun 24 14:29 REQUIREMENTS.md
+-rw-rw-r--  1 nicholas nicholas    176 Jun 24 14:29 pyproject.toml
+drwxrwxr-x  2 nicholas nicholas   4096 Jun 24 14:32 scc_mcp
+-rw-rw-r--  1 nicholas nicholas  91801 Jun 24 14:30 session-ses_104f.md
+-rw-rw-r--  1 nicholas nicholas 127288 Jun 24 14:29 uv.lock
+
+```
+
+**Tool: read**
+
+**Input:**
+```json
+{
+  "filePath": "/home/nicholas/Documents/projects/scc-mcp/main.py"
+}
+```
+
+**Error:**
+```
+File not found: /home/nicholas/Documents/projects/scc-mcp/main.py
+```
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 4.7s)
+
+`main.py` no longer exists and there's a new `scc_mcp/` directory. Let me check it.
+
+**Tool: bash**
+
+**Input:**
+```json
+{
+  "command": "ls -la /home/nicholas/Documents/projects/scc-mcp/scc_mcp",
+  "description": "List scc_mcp directory"
+}
+```
+
+**Output:**
+```
+total 12
+drwxrwxr-x 2 nicholas nicholas 4096 Jun 24 14:32 .
+drwxrwxr-x 5 nicholas nicholas 4096 Jun 24 14:32 ..
+-rw-rw-r-- 1 nicholas nicholas    0 Jun 24 14:32 __init__.py
+-rw-rw-r-- 1 nicholas nicholas   85 Jun 24 14:18 main.py
+
+```
+
+**Tool: read**
+
+**Input:**
+```json
+{
+  "filePath": "/home/nicholas/Documents/projects/scc-mcp/pyproject.toml"
+}
+```
+
+**Output:**
+```
+<path>/home/nicholas/Documents/projects/scc-mcp/pyproject.toml</path>
+<type>file</type>
+<content>
+1: [project]
+2: name = "scc-mcp"
+3: version = "0.1.0"
+4: description = "Add your description here"
+5: readme = "README.md"
+6: requires-python = ">=3.14"
+7: dependencies = [
+8:     "fastmcp>=3.4.2",
+9: ]
+
+(End of file - total 9 lines)
+</content>
+```
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 4.2s)
+
+`main.py` moved to `scc_mcp/main.py`. The user said "the main.py file" — that's the one at `scc_mcp/main.py`.
+
+**Tool: read**
+
+**Input:**
+```json
+{
+  "filePath": "/home/nicholas/Documents/projects/scc-mcp/scc_mcp/main.py"
+}
+```
+
+**Output:**
+```
+<path>/home/nicholas/Documents/projects/scc-mcp/scc_mcp/main.py</path>
+<type>file</type>
+<content>
+1: def main():
+2:     print("Hello from scc-mcp!")
+3: 
+4: 
+5: if __name__ == "__main__":
+6:     main()
+
+(End of file - total 6 lines)
+</content>
+```
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 3.8s)
+
+Now I'll implement a minimal MCP server with a single tool that returns "Hello world".
+
+**Tool: write**
+
+**Input:**
+```json
+{
+  "filePath": "/home/nicholas/Documents/projects/scc-mcp/scc_mcp/main.py",
+  "content": "\"\"\"Minimal scc MCP server.\"\"\"\n\nfrom fastmcp import FastMCP\n\nmcp = FastMCP(\"scc_mcp\")\n\n\n@mcp.tool\ndef hello_world() -> str:\n    \"\"\"Return a simple greeting to confirm the server is reachable.\"\"\"\n    return \"Hello world\"\n\n\ndef main() -> None:\n    mcp.run()\n\n\nif __name__ == \"__main__\":\n    main()\n"
+}
+```
+
+**Output:**
+```
+Wrote file successfully.
+```
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 4.6s)
+
+Now let me verify it imports and the tool is registered correctly.
+
+**Tool: bash**
+
+**Input:**
+```json
+{
+  "command": "uv run python -c \"\nimport asyncio\nfrom scc_mcp.main import mcp, hello_world\n\nasync def check():\n    tools = await mcp.get_tools()\n    print('tools:', list(tools))\n\nasyncio.run(check())\nprint('hello_world() ->', hello_world())\n\"",
+  "description": "Verify server imports and tool works"
+}
+```
+
+**Output:**
+```
+Traceback (most recent call last):
+  File "<string>", line 9, in <module>
+    asyncio.run(check())
+    ~~~~~~~~~~~^^^^^^^^^
+  File "/home/linuxbrew/.linuxbrew/opt/python@3.14/lib/python3.14/asyncio/runners.py", line 204, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/home/linuxbrew/.linuxbrew/opt/python@3.14/lib/python3.14/asyncio/runners.py", line 127, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/home/linuxbrew/.linuxbrew/opt/python@3.14/lib/python3.14/asyncio/base_events.py", line 719, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "<string>", line 6, in check
+    tools = await mcp.get_tools()
+                  ^^^^^^^^^^^^^
+AttributeError: 'FastMCP' object has no attribute 'get_tools'. Did you mean: 'get_tool'?
+
+```
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 5.0s)
+
+The decorated `hello_world` becomes a `FunctionTool` object, not a plain callable, and the API differs. Let me check the correct introspection API and call the tool properly.
+
+**Tool: bash**
+
+**Input:**
+```json
+{
+  "command": "uv run python -c \"\nimport asyncio\nfrom scc_mcp.main import mcp\n\nasync def check():\n    tools = await mcp._list_tools()\n    for t in tools:\n        print('tool:', t.name)\n        res = await t.run({})\n        print('result:', res.content[0].text)\n\nasyncio.run(check())\n\"",
+  "description": "List tools and invoke hello_world"
+}
+```
+
+**Output:**
+```
+tool: hello_world
+result: Hello world
+
+```
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 5.2s)
+
+The server registers the `hello_world` tool and it returns "Hello world" when invoked. Let me also confirm the module runs as an MCP server (stdio) without erroring on startup.
+
+**Tool: bash**
+
+**Input:**
+```json
+{
+  "command": "timeout 3 uv run python -m scc_mcp.main < /dev/null; echo \"exit: $?\"",
+  "description": "Smoke-test server startup over stdio"
+}
+```
+
+**Output:**
+```
+
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│                                                                              │
+│                         ▄▀▀ ▄▀█ █▀▀ ▀█▀ █▀▄▀█ █▀▀ █▀█                        │
+│                         █▀  █▀█ ▄▄█  █  █ ▀ █ █▄▄ █▀▀                        │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                FastMCP 3.4.2                                 │
+│                            https://gofastmcp.com                             │
+│                                                                              │
+│                  🖥  Server:      scc_mcp, 3.4.2                              │
+│                  🚀 Deploy free: https://horizon.prefect.io                  │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[06/24/26 14:33:54] INFO     Starting MCP server 'scc_mcp' with transport.py:210
+                             transport 'stdio'                                  
+exit: 0
+
+```
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 4.3s)
+
+The server starts cleanly over stdio (timed out as expected since it waits for input — that's correct behavior).
+
+Done. Implemented a minimal MCP server in `scc_mcp/main.py` (note: `main.py` had moved into the `scc_mcp/` package since the last session).
+
+What it does:
+- Creates a `FastMCP("scc_mcp")` server.
+- Registers one tool, `hello_world`, that returns `"Hello world"`.
+- `main()` runs the server over stdio (default transport).
+
+Verified:
+- Tool registers and returns `Hello world` when invoked.
+- `uv run python -m scc_mcp.main` boots the server cleanly.
+
+To run it: `uv run python -m scc_mcp.main` (or `uv run python scc_mcp/main.py`).
+
+---
+
+## User
+
+Add a callable to the pyproject.toml file that allows us to run this as a "standalone" script via scc-mcp
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 3.7s)
+
+I'll add a `[project.scripts]` entry pointing to the `main` callable.
+
+**Tool: edit**
+
+**Input:**
+```json
+{
+  "filePath": "/home/nicholas/Documents/projects/scc-mcp/pyproject.toml",
+  "oldString": "dependencies = [\n    \"fastmcp>=3.4.2\",\n]",
+  "newString": "dependencies = [\n    \"fastmcp>=3.4.2\",\n]\n\n[project.scripts]\nscc-mcp = \"scc_mcp.main:main\""
+}
+```
+
+**Output:**
+```
+Edit applied successfully.
+```
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 3.1s)
+
+The `[project.scripts]` entry needs the package to be installed for the console script to be generated. Let me sync and verify.
+
+**Tool: bash**
+
+**Input:**
+```json
+{
+  "command": "uv sync && timeout 3 uv run scc-mcp < /dev/null; echo \"exit: $?\"",
+  "description": "Sync project and smoke-test scc-mcp script"
+}
+```
+
+**Output:**
+```
+Resolved 72 packages in 0.71ms
+warning: Skipping installation of entry points (`project.scripts`) for package `scc-mcp` because this project is not packaged; to install entry points, set `tool.uv.package = true` or define a `build-system`
+Checked 68 packages in 0.43ms
+error: Failed to spawn: `scc-mcp`
+  Caused by: No such file or directory (os error 2)
+exit: 2
+
+```
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 5.0s)
+
+uv reports the project isn't packaged, so the entry point isn't installed. I need to add a build system to make it packageable.
+
+**Tool: read**
+
+**Input:**
+```json
+{
+  "filePath": "/home/nicholas/Documents/projects/scc-mcp/pyproject.toml"
+}
+```
+
+**Output:**
+```
+<path>/home/nicholas/Documents/projects/scc-mcp/pyproject.toml</path>
+<type>file</type>
+<content>
+1: [project]
+2: name = "scc-mcp"
+3: version = "0.1.0"
+4: description = "Add your description here"
+5: readme = "README.md"
+6: requires-python = ">=3.14"
+7: dependencies = [
+8:     "fastmcp>=3.4.2",
+9: ]
+10: 
+11: [project.scripts]
+12: scc-mcp = "scc_mcp.main:main"
+
+(End of file - total 12 lines)
+</content>
+```
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 3.3s)
+
+**Tool: edit**
+
+**Input:**
+```json
+{
+  "filePath": "/home/nicholas/Documents/projects/scc-mcp/pyproject.toml",
+  "oldString": "[project.scripts]\nscc-mcp = \"scc_mcp.main:main\"",
+  "newString": "[project.scripts]\nscc-mcp = \"scc_mcp.main:main\"\n\n[build-system]\nrequires = [\"hatchling\"]\nbuild-backend = \"hatchling.build\""
+}
+```
+
+**Output:**
+```
+Edit applied successfully.
+```
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 3.6s)
+
+**Tool: bash**
+
+**Input:**
+```json
+{
+  "command": "uv sync && timeout 3 uv run scc-mcp < /dev/null; echo \"exit: $?\"",
+  "description": "Sync and smoke-test scc-mcp console script"
+}
+```
+
+**Output:**
+```
+Resolved 72 packages in 24ms
+   Building scc-mcp @ file:///home/nicholas/Documents/projects/scc-mcp
+      Built scc-mcp @ file:///home/nicholas/Documents/projects/scc-mcp
+Prepared 1 package in 312ms
+Installed 1 package in 0.64ms
+ + scc-mcp==0.1.0 (from file:///home/nicholas/Documents/projects/scc-mcp)
+
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│                                                                              │
+│                         ▄▀▀ ▄▀█ █▀▀ ▀█▀ █▀▄▀█ █▀▀ █▀█                        │
+│                         █▀  █▀█ ▄▄█  █  █ ▀ █ █▄▄ █▀▀                        │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                FastMCP 3.4.2                                 │
+│                            https://gofastmcp.com                             │
+│                                                                              │
+│                  🖥  Server:      scc_mcp, 3.4.2                              │
+│                  🚀 Deploy free: https://horizon.prefect.io                  │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[06/24/26 14:34:20] INFO     Starting MCP server 'scc_mcp' with transport.py:210
+                             transport 'stdio'                                  
+exit: 0
+
+```
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 4.3s)
+
+The `scc-mcp` console script now works.
+
+Done. Added a `[project.scripts]` entry plus a build backend (required for the entry point to actually install):
+
+```toml
+[project.scripts]
+scc-mcp = "scc_mcp.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+```
+
+The build system was necessary — `uv` skips installing entry points for non-packaged projects. After `uv sync`, the package builds and the script installs.
+
+Run it standalone with: `uv run scc-mcp` (or just `scc-mcp` from within the activated venv). Verified it boots the MCP server over stdio cleanly.
+
+---
+
+## User
+
+Create a Makefile with a build directive to build this
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 2.6s)
+
+**Tool: bash**
+
+**Input:**
+```json
+{
+  "command": "uv build --help 2>&1 | head -20",
+  "description": "Check uv build command availability"
+}
+```
+
+**Output:**
+```
+Build Python packages into source distributions and wheels
+
+Usage: uv build [OPTIONS] [SRC]
+
+Arguments:
+  [SRC]  The directory from which distributions should be built, or a source distribution archive to
+         build into a wheel
+
+Options:
+      --package <PACKAGE>
+          Build a specific package in the workspace
+      --all-packages
+          Builds all packages in the workspace
+  -o, --out-dir <OUT_DIR>
+          The output directory to which distributions should be written
+      --sdist
+          Build a source distribution ("sdist") from the given directory
+      --wheel
+          Build a binary distribution ("wheel") from the given directory
+      --no-build-logs
+
+```
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 3.7s)
+
+**Tool: write**
+
+**Input:**
+```json
+{
+  "filePath": "/home/nicholas/Documents/projects/scc-mcp/Makefile",
+  "content": ".PHONY: build clean\n\nbuild:\n\tuv build\n\nclean:\n\trm -rf dist\n"
+}
+```
+
+**Output:**
+```
+Wrote file successfully.
+```
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 18.2s)
+
+**Tool: bash**
+
+**Input:**
+```json
+{
+  "command": "make build && ls -la dist",
+  "description": "Run make build and list output"
+}
+```
+
+**Output:**
+```
+uv build
+Building source distribution...
+Building wheel from source distribution...
+Successfully built dist/scc_mcp-0.1.0.tar.gz
+Successfully built dist/scc_mcp-0.1.0-py3-none-any.whl
+total 92
+drwxrwxr-x 2 nicholas nicholas  4096 Jun 24 14:35 .
+drwxrwxr-x 6 nicholas nicholas  4096 Jun 24 14:35 ..
+-rw-rw-r-- 1 nicholas nicholas     1 Jun 24 14:35 .gitignore
+-rw-r--r-- 1 nicholas nicholas  2657 Jun 24 14:35 scc_mcp-0.1.0-py3-none-any.whl
+-rw-r--r-- 1 nicholas nicholas 76227 Jun 24 14:35 scc_mcp-0.1.0.tar.gz
+
+```
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 12.0s)
+
+Done. Created a `Makefile` with a `build` directive (plus a `clean` helper):
+
+```makefile
+.PHONY: build clean
+
+build:
+	uv build
+
+clean:
+	rm -rf dist
+```
+
+Verified `make build` produces both artifacts in `dist/`:
+- `scc_mcp-0.1.0-py3-none-any.whl`
+- `scc_mcp-0.1.0.tar.gz`
+
+`dist/` is already covered by `.gitignore`. Run `make build` to build, `make clean` to remove the output.
+
+---
+
+## User
+
+Awesome. Edit the opencode congif to add the MCP service to run local
+
+---
+
+## Assistant (Plan · Claude Opus 4.8 · 5.2s)
+
+I'm in plan mode (read-only). Let me investigate the OpenCode config setup before proposing the edit.
+
+**Tool: bash**
+
+**Input:**
+```json
+{
+  "command": "ls -la /home/nicholas/Documents/projects/scc-mcp/.opencode 2>/dev/null; echo \"---root configs---\"; ls -la /home/nicholas/Documents/projects/scc-mcp/opencode.json* 2>/dev/null; echo \"---global---\"; ls -la /home/nicholas/.config/opencode/opencode.json* 2>/dev/null",
+  "description": "Locate opencode config files"
+}
+```
+
+**Output:**
+```
+---root configs---
+---global---
+lrwxrwxrwx 1 nicholas nicholas 64 Jun  8 12:14 /home/nicholas/.config/opencode/opencode.json -> ../../Documents/projects/dotfiles/.config/opencode/opencode.json
+
+```
+
+**Tool: glob**
+
+**Input:**
+```json
+{
+  "pattern": "**/opencode.json*"
+}
+```
+
+**Output:**
+```
+No files found
+```
+
+---
+
+## Assistant (Plan · Claude Opus 4.8 · 2.9s)
+
+No project-local `opencode.json` exists yet. There's a global one (symlinked into a dotfiles repo). Let me load the customize-opencode skill for the correct MCP config schema and read the existing global config.
+
+**Tool: skill**
+
+**Input:**
+```json
+{
+  "name": "customize-opencode"
+}
+```
+
+**Output:**
+```
+<skill_content name="customize-opencode">
+# Skill: customize-opencode
+
+<!--
+  Built-in skill. Name and description are registered in code at
+  packages/core/src/plugin/skill.ts
+  and CUSTOMIZE_OPENCODE_SKILL_DESCRIPTION). The body below becomes the
+  skill's content.
+-->
+
+# Customizing opencode
+
+opencode validates its own config strictly and refuses to start when a field
+is wrong. The shapes below cover the common surface area, but they are a
+**summary, not the source of truth**.
+
+## Full schema reference
+
+The authoritative list of every config option — with field types, enums,
+defaults, and descriptions — lives in the published JSON Schema:
+
+**<https://opencode.ai/config.json>**
+
+If a field is not documented in this skill, or you need to confirm an exact
+shape before writing config, **fetch that URL and read the schema directly**
+rather than guessing. opencode hard-fails on invalid config, so the cost of a
+wrong shape is a broken startup.
+
+Independently, every `opencode.json` should declare
+`"$schema": "https://opencode.ai/config.json"` so the user's editor catches
+mistakes as they type.
+
+## Applying changes
+
+Config is loaded once when opencode starts and is not hot-reloaded. After
+saving changes to `opencode.json`, an agent file, a skill, a plugin, or any
+other config-time file, **tell the user to quit and restart opencode** for
+the changes to take effect. The running session will keep using the
+already-loaded config until then.
+
+## Where files live
+
+| Scope                         | Path                                                                                                                      |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Project config                | `./opencode.json`, `./opencode.jsonc`, or `.opencode/opencode.json` (opencode walks up from the cwd to the worktree root) |
+| Global config                 | `~/.config/opencode/opencode.json` (NOT `~/.opencode/`)                                                                   |
+| Project agents                | `.opencode/agent/<name>.md` or `.opencode/agents/<name>.md`                                                               |
+| Global agents                 | `~/.config/opencode/agent(s)/<name>.md`                                                                                   |
+| Project commands              | `.opencode/command/<name>.md` or `.opencode/commands/<name>.md`                                                           |
+| Global commands               | `~/.config/opencode/command(s)/<name>.md`                                                                                 |
+| Project skills                | `.opencode/skill(s)/<name>/SKILL.md`                                                                                      |
+| Global skills                 | `~/.config/opencode/skill(s)/<name>/SKILL.md`                                                                             |
+| External skills (auto-loaded) | `~/.claude/skills/<name>/SKILL.md`, `~/.agents/skills/<name>/SKILL.md`                                                    |
+
+Configs from each scope are deep-merged. Project overrides global. Unknown
+top-level keys in `opencode.json` are rejected with `ConfigInvalidError`.
+
+## opencode.json
+
+Every field is optional.
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "username": "string",
+  "model": "provider/model-id",
+  "small_model": "provider/model-id",
+  "default_agent": "agent-name",
+  "shell": "/bin/zsh",
+  "logLevel": "DEBUG" | "INFO" | "WARN" | "ERROR",
+  "share": "manual" | "auto" | "disabled",
+  "autoupdate": true | false | "notify",
+  "snapshot": true,
+  "instructions": ["AGENTS.md", "docs/style.md"],
+
+  "skills": {
+    "paths": [".opencode/skills", "/abs/path/to/skills"],
+    "urls": ["https://example.com/.well-known/skills/"]
+  },
+
+  "references": {
+    "docs": {
+      "path": "../docs",
+      "description": "Use for product behavior and documentation conventions"
+    },
+    "sdk": {
+      "repository": "owner/sdk",
+      "branch": "main",
+      "description": "Use for SDK implementation details",
+      "hidden": true
+    }
+  },
+
+  "agent": {
+    "my-agent": {
+      "model": "anthropic/claude-sonnet-4-6",
+      "mode": "subagent",
+      "description": "...",
+      "permission": { "edit": "deny" }
+    }
+  },
+
+  "command": {
+    "deploy": { "description": "...", "template": "..." }
+  },
+
+  "provider": {
+    "anthropic": { "options": { "apiKey": "..." } }
+  },
+  "disabled_providers": ["openai"],
+  "enabled_providers": ["anthropic"],
+
+  "mcp": {
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp"],
+      "enabled": true,
+      "env": {}
+    },
+    "remote-thing": {
+      "type": "remote",
+      "url": "https://...",
+      "headers": { "Authorization": "Bearer ..." }
+    }
+  },
+
+  "plugin": [
+    "opencode-gemini-auth",
+    "opencode-foo@1.2.3",
+    "./local-plugin.ts",
+    ["opencode-bar", { "option": "value" }]
+  ],
+
+  "permission": {
+    "edit": "deny",
+    "bash": { "git *": "allow", "*": "ask" }
+  },
+
+  "formatter": false,
+  "lsp": false,
+
+  "experimental": {
+    "primary_tools": ["edit"],
+    "mcp_timeout": 30000
+  },
+
+  "tool_output": { "max_lines": 200, "max_bytes": 8192 },
+
+  "compaction": { "auto": true, "tail_turns": 15 }
+}
+```
+
+Shape notes worth being explicit about:
+
+- `model` always carries a provider prefix: `"anthropic/claude-sonnet-4-6"`.
+- `skills` is an object with `paths` and/or `urls`, not an array.
+- `references` is an object keyed by alias. Each value is a local path, Git repository, or string shorthand.
+- `agent` is an object keyed by agent name, not an array.
+- `command` is an object keyed by command name, not an array.
+- `plugin` is an array of strings or `[name, options]` tuples, not an object.
+- `mcp[name].command` is an array of strings, never a single string. `type` is required.
+- `permission` is either a string action or an object keyed by tool name.
+
+## Skills
+
+opencode's skill loader scans for `**/SKILL.md` inside skill directories. The
+file is named `SKILL.md` exactly, and lives in its own folder named after the
+skill:
+
+```
+.opencode/skills/my-skill/SKILL.md
+```
+
+Frontmatter:
+
+```markdown
+---
+name: my-skill
+description: One sentence covering what this skill does AND when to trigger it. Front-load the literal keywords or filenames the user is likely to say.
+---
+
+# My Skill
+
+(skill body in markdown: instructions, examples, references)
+```
+
+- `name` is required, lowercase hyphen-separated, up to 64 chars, and matches the folder name.
+- `description` is effectively required: skills without one are filtered out and never surfaced to the model. Cover both _what_ the skill does and _when_ to use it. Write in third person ("Use when...", not "I help with..."). Front-load concrete trigger keywords and filenames; gate with "Use ONLY when..." if the skill should stay quiet on adjacent topics.
+- Optional: `license`, `compatibility`, `metadata` (string-string map).
+
+Register skills from non-default locations via `skills.paths` (scanned
+recursively for `**/SKILL.md`) and `skills.urls` (each URL serves a list of
+skills).
+
+## References
+
+References make local directories and Git repositories outside the active
+project available as supporting context. Configure them under `references`,
+keyed by the alias used in `@` autocomplete:
+
+```json
+{
+  "references": {
+    "docs": {
+      "path": "../product-docs",
+      "description": "Use for product behavior and terminology"
+    },
+    "effect": {
+      "repository": "Effect-TS/effect",
+      "branch": "main",
+      "description": "Use for Effect implementation details"
+    }
+  }
+}
+```
+
+Local `path` values may be relative to the declaring config, absolute, or use
+`~/`. Git `repository` values accept Git URLs, host/path references, and GitHub
+`owner/repo` shorthand; `branch` is optional. Both forms support optional
+`description` and `hidden` fields.
+
+- Only references with a `description` are advertised to agents in system context.
+- `hidden: true` removes a reference from TUI `@` autocomplete only. It remains available to agents and by direct path.
+- Reference directories are automatically allowed through the external-directory boundary; normal read/edit/tool permissions still apply.
+- String shorthand is supported: use `"docs": "../docs"` for local paths or `"effect": "Effect-TS/effect"` for Git repositories.
+
+## Agents
+
+Two ways to define an agent. Use the file form for anything non-trivial.
+
+### Inline (in `opencode.json`)
+
+```json
+{
+  "agent": {
+    "my-reviewer": {
+      "description": "Reviews PRs for style violations.",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": { "edit": "deny", "bash": "ask" },
+      "prompt": "You are a strict PR reviewer..."
+    }
+  }
+}
+```
+
+### File
+
+```
+.opencode/agent/my-reviewer.md      OR     .opencode/agents/my-reviewer.md
+```
+
+```markdown
+---
+description: Reviews PRs for style violations.
+mode: subagent
+model: anthropic/claude-sonnet-4-6
+permission:
+  edit: deny
+  bash: ask
+---
+
+You are a strict PR reviewer. Focus on...
+```
+
+The file body becomes the agent's `prompt`. Do not also put `prompt:` in the
+frontmatter.
+
+`mode` is one of `"primary"`, `"subagent"`, `"all"`.
+
+Allowed top-level frontmatter fields: `name, model, variant, description, mode,
+hidden, color, steps, options, permission, disable, temperature, top_p`. Any
+unknown field is silently routed into `options`.
+
+To disable a built-in agent: `agent: { build: { disable: true } }`, or in a
+file, `disable: true` in frontmatter.
+
+`default_agent` must point to a non-hidden, primary-mode agent.
+
+### Built-in agents
+
+opencode ships with `build`, `plan`, `general`, `explore`. Hidden internal agents:
+`compaction`, `title`, `summary`. To override a built-in's fields, define the
+same key in `agent: { <name>: { ... } }`.
+
+## Commands
+
+opencode's command loader scans for `**/*.md` inside command directories. The
+file is named after the command, and lives directly inside the `command` folder:
+
+```
+.opencode/command/deploy.md
+```
+
+Frontmatter:
+
+```markdown
+---
+description: One sentence describing what the command does.
+agent: build
+model: anthropic/claude-sonnet-4-6
+---
+
+(command body in markdown: the prompt opencode runs, with $ARGUMENTS for the user's input)
+```
+
+- `template` is the command body — everything below the frontmatter — and is required: it is the prompt opencode runs when the command is invoked. Do not also put a `template:` key in the frontmatter.
+- `$ARGUMENTS` is replaced with everything the user typed after the command; `$1`, `$2`, … pull individual positional arguments.
+- Optional: `description`, `agent`, `model`, `variant`, `subtask`.
+
+## Plugins
+
+`plugin:` is an array. Each entry is one of:
+
+```json
+"plugin": [
+  "opencode-gemini-auth",            // npm spec, latest
+  "opencode-foo@1.2.3",              // npm spec, pinned
+  "./local-plugin.ts",               // file path, relative to the declaring config
+  "file:///abs/path/plugin.js",      // file URL
+  ["opencode-bar", { "key": "val" }] // tuple form with options
+]
+```
+
+Auto-discovered plugins (no config entry needed): any `*.ts` or `*.js` file in
+`.opencode/plugin/` or `.opencode/plugins/`.
+
+A plugin module exports `default` (or any named export) of type
+`Plugin = (input: PluginInput, options?) => Promise<Hooks>`. The export is a
+function, not a plain object literal, and the function returns an object
+(return `{}` if there is nothing to register).
+
+```ts
+import type { Plugin } from "@opencode-ai/plugin"
+
+export default (async ({ client, project, directory, $ }) => {
+  return {
+    config: (cfg) => {
+      // cfg is the live merged config; mutate fields here.
+    },
+    "tool.execute.before": async (input, output) => {
+      // mutate output.args before the tool runs
+    },
+  }
+}) satisfies Plugin
+```
+
+Hook surface (mutate `output` in place; return `void`):
+
+- `event(input)`: every bus event
+- `config(cfg)`: once on init with the merged config
+- `chat.message`, `chat.params`, `chat.headers`
+- `tool.execute.before`, `tool.execute.after`
+- `tool.definition`
+- `command.execute.before`
+- `shell.env`
+- `permission.ask`
+- `experimental.chat.messages.transform`, `experimental.chat.system.transform`,
+  `experimental.session.compacting`, `experimental.compaction.autocontinue`,
+  `experimental.text.complete`
+
+Special object-shaped (not callbacks): `tool: { my_tool: { ... } }`,
+`auth: { ... }`, `provider: { ... }`.
+
+## MCP servers
+
+`mcp:` is an object keyed by server name. Each server is discriminated by
+`type`:
+
+```json
+{
+  "mcp": {
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp"],
+      "enabled": true,
+      "env": { "BROWSER": "chromium" }
+    },
+    "github": {
+      "type": "remote",
+      "url": "https://...",
+      "enabled": true,
+      "headers": { "Authorization": "Bearer {env:GITHUB_TOKEN}" }
+    },
+    "old-server": { "enabled": false }
+  }
+}
+```
+
+`command` is an array of strings. `type` is required. Use `enabled: false` to
+disable a server inherited from a parent config. String values such as header
+tokens support `{env:VAR}` interpolation (and `{file:path}`); the shell-style
+`${VAR}` is not substituted.
+
+## Permissions
+
+```json
+"permission": {
+  "edit": "deny",
+  "bash": { "git *": "allow", "rm *": "deny", "*": "ask" },
+  "external_directory": { "~/secrets/**": "deny", "*": "allow" }
+}
+```
+
+Actions: `"allow"`, `"ask"`, `"deny"`.
+
+Per-tool value forms: `"allow"` shorthand (treated as `{"*": "allow"}`), or an
+object `{ pattern: action }`. Within an object, **insertion order matters**.
+opencode evaluates the LAST matching rule, so put broad rules first and narrow
+rules last.
+
+`permission: "allow"` (a string at the top level) is shorthand for "allow
+everything" and is rarely what the user wants.
+
+Known permission keys: `read, edit, glob, grep, list, bash, task,
+external_directory, todowrite, question, webfetch, websearch, lsp, doom_loop,
+skill`. Some of these (`todowrite,
+question, webfetch, websearch, doom_loop`) only accept a flat
+action, not a per-pattern object.
+
+`external_directory` patterns are filesystem paths (use `~/`, absolute paths,
+or globs like `~/projects/**`).
+
+Per-agent `permission:` overrides top-level `permission:`. Plan Mode lives on
+the `plan` agent's permission ruleset (`edit: deny *`).
+
+## Escape hatches
+
+When a user's config is broken and opencode won't start, these env vars help:
+
+- `OPENCODE_DISABLE_PROJECT_CONFIG=1`: skip the project's local `opencode.json`
+  and start from globals only. Run from the project directory, opencode loads,
+  the user edits the broken file, then they restart without the flag.
+- `OPENCODE_CONFIG=/path/to/file.json`: load an additional explicit config.
+- `OPENCODE_CONFIG_CONTENT='{"$schema":"https://opencode.ai/config.json"}'`:
+  inject inline JSON as a final local-scope merge.
+- `OPENCODE_DISABLE_DEFAULT_PLUGINS=1`: skip default plugins.
+- `OPENCODE_PURE=1`: skip external plugins entirely.
+- `OPENCODE_DISABLE_EXTERNAL_SKILLS=1`,
+  `OPENCODE_DISABLE_CLAUDE_CODE_SKILLS=1`: skip the external skill scans under
+  `~/.claude/` and `~/.agents/`.
+
+## When proposing edits
+
+- Validate against the schema before writing. If you are unsure of a field's
+  exact shape, or the field is not covered in this skill, fetch
+  `https://opencode.ai/config.json` and read the schema rather than guessing.
+- Preserve `$schema` and any existing fields the user did not ask to change.
+- For agent, command, skill, and plugin definitions, prefer creating new files
+  in the correct location over inlining everything in `opencode.json`.
+- If the user's existing config is malformed, point them at the env-var escape
+  hatches above so they can edit from inside opencode without breaking their
+  session.
+- After saving any config change, remind the user to quit and restart opencode
+  — running sessions keep using the already-loaded config.
+
+Base directory for this skill: file:///home/nicholas/Documents/projects/scc-mcp
+Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.
+Note: file list is sampled.
+
+<skill_files>
+<file>/home/nicholas/Documents/projects/scc-mcp/Makefile</file>
+<file>/home/nicholas/Documents/projects/scc-mcp/.gitignore</file>
+<file>/home/nicholas/Documents/projects/scc-mcp/scc_mcp/__init__.py</file>
+<file>/home/nicholas/Documents/projects/scc-mcp/scc_mcp/main.py</file>
+<file>/home/nicholas/Documents/projects/scc-mcp/uv.lock</file>
+<file>/home/nicholas/Documents/projects/scc-mcp/README.md</file>
+<file>/home/nicholas/Documents/projects/scc-mcp/AGENTS.md</file>
+<file>/home/nicholas/Documents/projects/scc-mcp/session-ses_104f.md</file>
+<file>/home/nicholas/Documents/projects/scc-mcp/.python-version</file>
+<file>/home/nicholas/Documents/projects/scc-mcp/pyproject.toml</file>
+</skill_files>
+</skill_content>
+```
+
+---
+
+## Assistant (Plan · Claude Opus 4.8 · 6.9s)
+
+I have the MCP config schema. The key decision is **which** config to edit — the project-local one (recommended, scoped to this repo) vs the global dotfiles one. Let me confirm there's no project config and check the global one's current shape.
+
+**Tool: read**
+
+**Input:**
+```json
+{
+  "filePath": "/home/nicholas/.config/opencode/opencode.json"
+}
+```
+
+**Output:**
+```
+<path>/home/nicholas/.config/opencode/opencode.json</path>
+<type>file</type>
+<content>
+1: {
+2:   "$schema": "https://opencode.ai/config.json",
+3:   "share": "disabled",
+4:   "autoupdate": "notify",
+5:   "experimental": {
+6:     "openTelemetry": false
+7:   },
+8:   "attachment": {
+9:     "image": {
+10:       "auto_resize": true,
+11:       "max_width": 2000,
+12:       "max_height": 2000,
+13:       "max_base64_bytes": 5242880
+14:     }
+15:   },
+16:   "mcp": {
+17:     "paraview": {
+18:         "type": "remote",
+19:         "url": "http://localhost:8080/mcp",
+20:         "enabled": true
+21:     }
+22:   },
+23:   "plugin": [
+24:     "opencode-gemini-auth@latest"
+25:   ],
+26:   "provider": {
+27:     "argo-proxy": {
+28:       "npm": "@ai-sdk/openai-compatible",
+29:       "name": "Argo Proxy",
+30:       "options": {
+31:         "baseURL": "http://localhost:52675/v1",
+32:         "apiKey": "nsynovic"
+33:       },
+34:       "models": {
+35:         "argo:gpt-4o-2024-11-20": {
+36:           "name": "GPT-4o (2024-11-20)",
+37:           "modalities": {
+38:             "input": [
+39:               "text",
+40:               "image"
+41:             ],
+42:             "output": [
+43:               "text"
+44:             ]
+45:           },
+46:           "limit": {
+47:             "context": 128000,
+48:             "output": 16384
+49:           }
+50:         },
+51:         "argo:gpt-o3-mini": {
+52:           "name": "GPT o3 Mini"
+53:         },
+54:         "argo:o3-mini": {
+55:           "name": "o3 Mini",
+56:           "limit": {
+57:             "context": 200000,
+58:             "output": 100000
+59:           }
+60:         },
+61:         "argo:gpt-o1": {
+62:           "name": "GPT o1"
+63:         },
+64:         "argo:o1": {
+65:           "name": "o1",
+66:           "modalities": {
+67:             "input": [
+68:               "text",
+69:               "image"
+70:             ],
+71:             "output": [
+72:               "text"
+73:             ]
+74:           },
+75:           "limit": {
+76:             "context": 200000,
+77:             "output": 100000
+78:           }
+79:         },
+80:         "argo:gpt-o3": {
+81:           "name": "GPT o3"
+82:         },
+83:         "argo:o3": {
+84:           "name": "o3",
+85:           "modalities": {
+86:             "input": [
+87:               "text",
+88:               "image"
+89:             ],
+90:             "output": [
+91:               "text"
+92:             ]
+93:           },
+94:           "limit": {
+95:             "context": 200000,
+96:             "output": 100000
+97:           }
+98:         },
+99:         "argo:gpt-o4-mini": {
+100:           "name": "GPT o4 Mini"
+101:         },
+102:         "argo:o4-mini": {
+103:           "name": "o4 Mini",
+104:           "modalities": {
+105:             "input": [
+106:               "text",
+107:               "image"
+108:             ],
+109:             "output": [
+110:               "text"
+111:             ]
+112:           },
+113:           "limit": {
+114:             "context": 200000,
+115:             "output": 100000
+116:           }
+117:         },
+118:         "argo:gpt-4.1": {
+119:           "name": "GPT-4.1",
+120:           "modalities": {
+121:             "input": [
+122:               "text",
+123:               "image"
+124:             ],
+125:             "output": [
+126:               "text"
+127:             ]
+128:           },
+129:           "limit": {
+130:             "context": 1047576,
+131:             "output": 32768
+132:           }
+133:         },
+134:         "argo:gpt-4.1-mini": {
+135:           "name": "GPT-4.1 Mini",
+136:           "modalities": {
+137:             "input": [
+138:               "text",
+139:               "image"
+140:             ],
+141:             "output": [
+142:               "text"
+143:             ]
+144:           },
+145:           "limit": {
+146:             "context": 1047576,
+147:             "output": 32768
+148:           }
+149:         },
+150:         "argo:gpt-4.1-nano": {
+151:           "name": "GPT-4.1 Nano",
+152:           "modalities": {
+153:             "input": [
+154:               "text",
+155:               "image"
+156:             ],
+157:             "output": [
+158:               "text"
+159:             ]
+160:           },
+161:           "limit": {
+162:             "context": 1047576,
+163:             "output": 32768
+164:           }
+165:         },
+166:         "argo:gpt-5": {
+167:           "name": "GPT-5",
+168:           "modalities": {
+169:             "input": [
+170:               "text",
+171:               "image"
+172:             ],
+173:             "output": [
+174:               "text"
+175:             ]
+176:           },
+177:           "limit": {
+178:             "context": 400000,
+179:             "output": 128000
+180:           },
+181:           "variants": {
+182:             "none": {
+183:               "reasoningEffort": "none",
+184:               "reasoningSummary": "auto",
+185:               "textVerbosity": "medium"
+186:             },
+187:             "low": {
+188:               "reasoningEffort": "low",
+189:               "reasoningSummary": "auto",
+190:               "textVerbosity": "medium"
+191:             },
+192:             "medium": {
+193:               "reasoningEffort": "medium",
+194:               "reasoningSummary": "auto",
+195:               "textVerbosity": "medium"
+196:             },
+197:             "high": {
+198:               "reasoningEffort": "high",
+199:               "reasoningSummary": "detailed",
+200:               "textVerbosity": "medium"
+201:             },
+202:             "xhigh": {
+203:               "reasoningEffort": "xhigh",
+204:               "reasoningSummary": "detailed",
+205:               "textVerbosity": "medium"
+206:             }
+207:           }
+208:         },
+209:         "argo:gpt-5-mini": {
+210:           "name": "GPT-5 Mini",
+211:           "modalities": {
+212:             "input": [
+213:               "text",
+214:               "image"
+215:             ],
+216:             "output": [
+217:               "text"
+218:             ]
+219:           },
+220:           "limit": {
+221:             "context": 400000,
+222:             "output": 128000
+223:           },
+224:           "variants": {
+225:             "none": {
+226:               "reasoningEffort": "none",
+227:               "reasoningSummary": "auto",
+228:               "textVerbosity": "medium"
+229:             },
+230:             "low": {
+231:               "reasoningEffort": "low",
+232:               "reasoningSummary": "auto",
+233:               "textVerbosity": "medium"
+234:             },
+235:             "medium": {
+236:               "reasoningEffort": "medium",
+237:               "reasoningSummary": "auto",
+238:               "textVerbosity": "medium"
+239:             },
+240:             "high": {
+241:               "reasoningEffort": "high",
+242:               "reasoningSummary": "detailed",
+243:               "textVerbosity": "medium"
+244:             },
+245:             "xhigh": {
+246:               "reasoningEffort": "xhigh",
+247:               "reasoningSummary": "detailed",
+248:               "textVerbosity": "medium"
+249:             }
+250:           }
+251:         },
+252:         "argo:gpt-5-nano": {
+253:           "name": "GPT-5 Nano",
+254:           "modalities": {
+255:             "input": [
+256:               "text",
+257:               "image"
+258:             ],
+259:             "output": [
+260:               "text"
+261:             ]
+262:           },
+263:           "limit": {
+264:             "context": 400000,
+265:             "output": 128000
+266:           },
+267:           "variants": {
+268:             "none": {
+269:               "reasoningEffort": "none",
+270:               "reasoningSummary": "auto",
+271:               "textVerbosity": "medium"
+272:             },
+273:             "low": {
+274:               "reasoningEffort": "low",
+275:               "reasoningSummary": "auto",
+276:               "textVerbosity": "medium"
+277:             },
+278:             "medium": {
+279:               "reasoningEffort": "medium",
+280:               "reasoningSummary": "auto",
+281:               "textVerbosity": "medium"
+282:             },
+283:             "high": {
+284:               "reasoningEffort": "high",
+285:               "reasoningSummary": "detailed",
+286:               "textVerbosity": "medium"
+287:             },
+288:             "xhigh": {
+289:               "reasoningEffort": "xhigh",
+290:               "reasoningSummary": "detailed",
+291:               "textVerbosity": "medium"
+292:             }
+293:           }
+294:         },
+295:         "argo:gpt-5.1": {
+296:           "name": "GPT-5.1",
+297:           "modalities": {
+298:             "input": [
+299:               "text",
+300:               "image"
+301:             ],
+302:             "output": [
+303:               "text"
+304:             ]
+305:           },
+306:           "limit": {
+307:             "context": 400000,
+308:             "output": 128000
+309:           },
+310:           "variants": {
+311:             "none": {
+312:               "reasoningEffort": "none",
+313:               "reasoningSummary": "auto",
+314:               "textVerbosity": "medium"
+315:             },
+316:             "low": {
+317:               "reasoningEffort": "low",
+318:               "reasoningSummary": "auto",
+319:               "textVerbosity": "medium"
+320:             },
+321:             "medium": {
+322:               "reasoningEffort": "medium",
+323:               "reasoningSummary": "auto",
+324:               "textVerbosity": "medium"
+325:             },
+326:             "high": {
+327:               "reasoningEffort": "high",
+328:               "reasoningSummary": "detailed",
+329:               "textVerbosity": "medium"
+330:             },
+331:             "xhigh": {
+332:               "reasoningEffort": "xhigh",
+333:               "reasoningSummary": "detailed",
+334:               "textVerbosity": "medium"
+335:             }
+336:           }
+337:         },
+338:         "argo:gpt-5-2": {
+339:           "name": "GPT-5.2",
+340:           "modalities": {
+341:             "input": [
+342:               "text",
+343:               "image"
+344:             ],
+345:             "output": [
+346:               "text"
+347:             ]
+348:           },
+349:           "limit": {
+350:             "context": 400000,
+351:             "output": 128000
+352:           },
+353:           "variants": {
+354:             "none": {
+355:               "reasoningEffort": "none",
+356:               "reasoningSummary": "auto",
+357:               "textVerbosity": "medium"
+358:             },
+359:             "low": {
+360:               "reasoningEffort": "low",
+361:               "reasoningSummary": "auto",
+362:               "textVerbosity": "medium"
+363:             },
+364:             "medium": {
+365:               "reasoningEffort": "medium",
+366:               "reasoningSummary": "auto",
+367:               "textVerbosity": "medium"
+368:             },
+369:             "high": {
+370:               "reasoningEffort": "high",
+371:               "reasoningSummary": "detailed",
+372:               "textVerbosity": "medium"
+373:             },
+374:             "xhigh": {
+375:               "reasoningEffort": "xhigh",
+376:               "reasoningSummary": "detailed",
+377:               "textVerbosity": "medium"
+378:             }
+379:           }
+380:         },
+381:         "argo:gpt-5.4": {
+382:           "name": "GPT-5.4",
+383:           "modalities": {
+384:             "input": [
+385:               "text",
+386:               "image"
+387:             ],
+388:             "output": [
+389:               "text"
+390:             ]
+391:           },
+392:           "limit": {
+393:             "context": 1000000,
+394:             "output": 128000
+395:           },
+396:           "variants": {
+397:             "none": {
+398:               "reasoningEffort": "none",
+399:               "reasoningSummary": "auto",
+400:               "textVerbosity": "medium"
+401:             },
+402:             "low": {
+403:               "reasoningEffort": "low",
+404:               "reasoningSummary": "auto",
+405:               "textVerbosity": "medium"
+406:             },
+407:             "medium": {
+408:               "reasoningEffort": "medium",
+409:               "reasoningSummary": "auto",
+410:               "textVerbosity": "medium"
+411:             },
+412:             "high": {
+413:               "reasoningEffort": "high",
+414:               "reasoningSummary": "detailed",
+415:               "textVerbosity": "medium"
+416:             },
+417:             "xhigh": {
+418:               "reasoningEffort": "xhigh",
+419:               "reasoningSummary": "detailed",
+420:               "textVerbosity": "medium"
+421:             }
+422:           }
+423:         },
+424:         "argo:gpt-5.5": {
+425:           "name": "GPT-5.5",
+426:           "modalities": {
+427:             "input": [
+428:               "text",
+429:               "image"
+430:             ],
+431:             "output": [
+432:               "text"
+433:             ]
+434:           },
+435:           "limit": {
+436:             "context": 1000000,
+437:             "output": 128000
+438:           },
+439:           "variants": {
+440:             "none": {
+441:               "reasoningEffort": "none",
+442:               "reasoningSummary": "auto",
+443:               "textVerbosity": "medium"
+444:             },
+445:             "low": {
+446:               "reasoningEffort": "low",
+447:               "reasoningSummary": "auto",
+448:               "textVerbosity": "medium"
+449:             },
+450:             "medium": {
+451:               "reasoningEffort": "medium",
+452:               "reasoningSummary": "auto",
+453:               "textVerbosity": "medium"
+454:             },
+455:             "high": {
+456:               "reasoningEffort": "high",
+457:               "reasoningSummary": "detailed",
+458:               "textVerbosity": "medium"
+459:             },
+460:             "xhigh": {
+461:               "reasoningEffort": "xhigh",
+462:               "reasoningSummary": "detailed",
+463:               "textVerbosity": "medium"
+464:             }
+465:           }
+466:         },
+467:         "argo:gemini-2.5-pro": {
+468:           "name": "Gemini 2.5 Pro",
+469:           "modalities": {
+470:             "input": [
+471:               "text",
+472:               "image"
+473:             ],
+474:             "output": [
+475:               "text"
+476:             ]
+477:           },
+478:           "limit": {
+479:             "context": 1048576,
+480:             "output": 65536
+481:           }
+482:         },
+483:         "argo:gemini-2.5-flash": {
+484:           "name": "Gemini 2.5 Flash",
+485:           "modalities": {
+486:             "input": [
+487:               "text",
+488:               "image"
+489:             ],
+490:             "output": [
+491:               "text"
+492:             ]
+493:           },
+494:           "limit": {
+495:             "context": 1048576,
+496:             "output": 65536
+497:           }
+498:         },
+499:         "argo:gemini-3.1-flash-lite": {
+500:           "name": "Gemini 3.1 Flash Lite",
+501:           "modalities": {
+502:             "input": [
+503:               "text",
+504:               "image"
+505:             ],
+506:             "output": [
+507:               "text"
+508:             ]
+509:           },
+510:           "limit": {
+511:             "context": 1048576,
+512:             "output": 65536
+513:           }
+514:         },
+515:         "argo:gemini-3.5-flash": {
+516:           "name": "Gemini 3.5 Flash",
+517:           "modalities": {
+518:             "input": [
+519:               "text",
+520:               "image"
+521:             ],
+522:             "output": [
+523:               "text"
+524:             ]
+525:           },
+526:           "limit": {
+527:             "context": 1048576,
+528:             "output": 65536
+529:           }
+530:         },
+531:         "argo:claude-opus-4.8": {
+532:           "name": "Claude 4.8 Opus",
+533:           "options": {
+534:             "temperature": 1
+535:           },
+536:           "modalities": {
+537:             "input": [
+538:               "text",
+539:               "image"
+540:             ],
+541:             "output": [
+542:               "text"
+543:             ]
+544:           },
+545:           "limit": {
+546:             "context": 200000,
+547:             "output": 32000
+548:           }
+549:         },
+550:         "argo:claude-opus-4.7": {
+551:           "name": "Claude 4.7 Opus",
+552:           "modalities": {
+553:             "input": [
+554:               "text",
+555:               "image"
+556:             ],
+557:             "output": [
+558:               "text"
+559:             ]
+560:           },
+561:           "limit": {
+562:             "context": 200000,
+563:             "output": 32000
+564:           }
+565:         },
+566:         "argo:claude-opus-4.6": {
+567:           "name": "Claude Opus 4.6",
+568:           "modalities": {
+569:             "input": [
+570:               "text",
+571:               "image"
+572:             ],
+573:             "output": [
+574:               "text"
+575:             ]
+576:           },
+577:           "limit": {
+578:             "context": 200000,
+579:             "output": 32000
+580:           }
+581:         },
+582:         "argo:claude-opus-4.5": {
+583:           "name": "Claude Opus 4.5",
+584:           "modalities": {
+585:             "input": [
+586:               "text",
+587:               "image"
+588:             ],
+589:             "output": [
+590:               "text"
+591:             ]
+592:           },
+593:           "limit": {
+594:             "context": 200000,
+595:             "output": 32000
+596:           }
+597:         },
+598:         "argo:claude-opus-4.1": {
+599:           "name": "Claude Opus 4.1",
+600:           "modalities": {
+601:             "input": [
+602:               "text",
+603:               "image"
+604:             ],
+605:             "output": [
+606:               "text"
+607:             ]
+608:           },
+609:           "limit": {
+610:             "context": 200000,
+611:             "output": 32000
+612:           }
+613:         },
+614:         "argo:claude-haiku-4.5": {
+615:           "name": "Claude 4.5 Haiku",
+616:           "modalities": {
+617:             "input": [
+618:               "text",
+619:               "image"
+620:             ],
+621:             "output": [
+622:               "text"
+623:             ]
+624:           },
+625:           "limit": {
+626:             "context": 200000,
+627:             "output": 8192
+628:           }
+629:         },
+630:         "argo:claude-sonnet-4.6": {
+631:           "name": "Claude 4.6 Sonnet",
+632:           "modalities": {
+633:             "input": [
+634:               "text",
+635:               "image"
+636:             ],
+637:             "output": [
+638:               "text"
+639:             ]
+640:           },
+641:           "limit": {
+642:             "context": 200000,
+643:             "output": 64000
+644:           }
+645:         },
+646:         "argo:claude-sonnet-4.5": {
+647:           "name": "Claude 4.5 Sonnet",
+648:           "modalities": {
+649:             "input": [
+650:               "text",
+651:               "image"
+652:             ],
+653:             "output": [
+654:               "text"
+655:             ]
+656:           },
+657:           "limit": {
+658:             "context": 200000,
+659:             "output": 64000
+660:           }
+661:         }
+662:       }
+663:     },
+664:     "argo-onsite": {
+665:       "npm": "@ai-sdk/openai-compatible",
+666:       "name": "Argo On Site",
+667:       "options": {
+668:         "baseURL": "https://apps.inside.anl.gov/argoapi/v1",
+669:         "headers": {
+670:           "Authorization": "Bearer nsynovic"
+671:         }
+672:       },
+673:       "models": {
+674:         "gpt4o": {
+675:           "name": "GPT-4o",
+676:           "modalities": {
+677:             "input": [
+678:               "text",
+679:               "image"
+680:             ],
+681:             "output": [
+682:               "text"
+683:             ]
+684:           },
+685:           "limit": {
+686:             "context": 128000,
+687:             "output": 16384
+688:           }
+689:         },
+690:         "gpto3mini": {
+691:           "name": "o3-mini",
+692:           "limit": {
+693:             "context": 200000,
+694:             "output": 100000
+695:           }
+696:         },
+697:         "gpto1": {
+698:           "name": "o1",
+699:           "modalities": {
+700:             "input": [
+701:               "text",
+702:               "image"
+703:             ],
+704:             "output": [
+705:               "text"
+706:             ]
+707:           },
+708:           "limit": {
+709:             "context": 200000,
+710:             "output": 100000
+711:           }
+712:         },
+713:         "gpto3": {
+714:           "name": "o3",
+715:           "modalities": {
+716:             "input": [
+717:               "text",
+718:               "image"
+719:             ],
+720:             "output": [
+721:               "text"
+722:             ]
+723:           },
+724:           "limit": {
+725:             "context": 200000,
+726:             "output": 100000
+727:           }
+728:         },
+729:         "gpto4mini": {
+730:           "name": "o4-mini",
+731:           "modalities": {
+732:             "input": [
+733:               "text",
+734:               "image"
+735:             ],
+736:             "output": [
+737:               "text"
+738:             ]
+739:           },
+740:           "limit": {
+741:             "context": 200000,
+742:             "output": 100000
+743:           }
+744:         },
+745:         "gpt41": {
+746:           "name": "GPT-4.1",
+747:           "modalities": {
+748:             "input": [
+749:               "text",
+750:               "image"
+751:             ],
+752:             "output": [
+753:               "text"
+754:             ]
+755:           },
+756:           "limit": {
+757:             "context": 1047576,
+758:             "output": 32768
+759:           }
+760:         },
+761:         "gpt41mini": {
+762:           "name": "GPT-4.1-mini",
+763:           "modalities": {
+764:             "input": [
+765:               "text",
+766:               "image"
+767:             ],
+768:             "output": [
+769:               "text"
+770:             ]
+771:           },
+772:           "limit": {
+773:             "context": 1047576,
+774:             "output": 32768
+775:           }
+776:         },
+777:         "gpt41nano": {
+778:           "name": "GPT-4.1-nano",
+779:           "modalities": {
+780:             "input": [
+781:               "text",
+782:               "image"
+783:             ],
+784:             "output": [
+785:               "text"
+786:             ]
+787:           },
+788:           "limit": {
+789:             "context": 1047576,
+790:             "output": 32768
+791:           }
+792:         },
+793:         "gpt5": {
+794:           "name": "GPT-5",
+795:           "modalities": {
+796:             "input": [
+797:               "text",
+798:               "image"
+799:             ],
+800:             "output": [
+801:               "text"
+802:             ]
+803:           },
+804:           "limit": {
+805:             "context": 400000,
+806:             "output": 128000
+807:           },
+808:           "variants": {
+809:             "none": {
+810:               "reasoningEffort": "none",
+811:               "reasoningSummary": "auto",
+812:               "textVerbosity": "medium"
+813:             },
+814:             "low": {
+815:               "reasoningEffort": "low",
+816:               "reasoningSummary": "auto",
+817:               "textVerbosity": "medium"
+818:             },
+819:             "medium": {
+820:               "reasoningEffort": "medium",
+821:               "reasoningSummary": "auto",
+822:               "textVerbosity": "medium"
+823:             },
+824:             "high": {
+825:               "reasoningEffort": "high",
+826:               "reasoningSummary": "detailed",
+827:               "textVerbosity": "medium"
+828:             },
+829:             "xhigh": {
+830:               "reasoningEffort": "xhigh",
+831:               "reasoningSummary": "detailed",
+832:               "textVerbosity": "medium"
+833:             }
+834:           }
+835:         },
+836:         "gpt5mini": {
+837:           "name": "GPT-5-mini",
+838:           "modalities": {
+839:             "input": [
+840:               "text",
+841:               "image"
+842:             ],
+843:             "output": [
+844:               "text"
+845:             ]
+846:           },
+847:           "limit": {
+848:             "context": 400000,
+849:             "output": 128000
+850:           },
+851:           "variants": {
+852:             "none": {
+853:               "reasoningEffort": "none",
+854:               "reasoningSummary": "auto",
+855:               "textVerbosity": "medium"
+856:             },
+857:             "low": {
+858:               "reasoningEffort": "low",
+859:               "reasoningSummary": "auto",
+860:               "textVerbosity": "medium"
+861:             },
+862:             "medium": {
+863:               "reasoningEffort": "medium",
+864:               "reasoningSummary": "auto",
+865:               "textVerbosity": "medium"
+866:             },
+867:             "high": {
+868:               "reasoningEffort": "high",
+869:               "reasoningSummary": "detailed",
+870:               "textVerbosity": "medium"
+871:             },
+872:             "xhigh": {
+873:               "reasoningEffort": "xhigh",
+874:               "reasoningSummary": "detailed",
+875:               "textVerbosity": "medium"
+876:             }
+877:           }
+878:         },
+879:         "gpt5nano": {
+880:           "name": "GPT-5-nano",
+881:           "modalities": {
+882:             "input": [
+883:               "text",
+884:               "image"
+885:             ],
+886:             "output": [
+887:               "text"
+888:             ]
+889:           },
+890:           "limit": {
+891:             "context": 400000,
+892:             "output": 128000
+893:           },
+894:           "variants": {
+895:             "none": {
+896:               "reasoningEffort": "none",
+897:               "reasoningSummary": "auto",
+898:               "textVerbosity": "medium"
+899:             },
+900:             "low": {
+901:               "reasoningEffort": "low",
+902:               "reasoningSummary": "auto",
+903:               "textVerbosity": "medium"
+904:             },
+905:             "medium": {
+906:               "reasoningEffort": "medium",
+907:               "reasoningSummary": "auto",
+908:               "textVerbosity": "medium"
+909:             },
+910:             "high": {
+911:               "reasoningEffort": "high",
+912:               "reasoningSummary": "detailed",
+913:               "textVerbosity": "medium"
+914:             },
+915:             "xhigh": {
+916:               "reasoningEffort": "xhigh",
+917:               "reasoningSummary": "detailed",
+918:               "textVerbosity": "medium"
+919:             }
+920:           }
+921:         },
+922:         "gpt51": {
+923:           "name": "GPT-5.1",
+924:           "modalities": {
+925:             "input": [
+926:               "text",
+927:               "image"
+928:             ],
+929:             "output": [
+930:               "text"
+931:             ]
+932:           },
+933:           "limit": {
+934:             "context": 400000,
+935:             "output": 128000
+936:           },
+937:           "variants": {
+938:             "none": {
+939:               "reasoningEffort": "none",
+940:               "reasoningSummary": "auto",
+941:               "textVerbosity": "medium"
+942:             },
+943:             "low": {
+944:               "reasoningEffort": "low",
+945:               "reasoningSummary": "auto",
+946:               "textVerbosity": "medium"
+947:             },
+948:             "medium": {
+949:               "reasoningEffort": "medium",
+950:               "reasoningSummary": "auto",
+951:               "textVerbosity": "medium"
+952:             },
+953:             "high": {
+954:               "reasoningEffort": "high",
+955:               "reasoningSummary": "detailed",
+956:               "textVerbosity": "medium"
+957:             },
+958:             "xhigh": {
+959:               "reasoningEffort": "xhigh",
+960:               "reasoningSummary": "detailed",
+961:               "textVerbosity": "medium"
+962:             }
+963:           }
+964:         },
+965:         "gpt52": {
+966:           "name": "GPT-5.2",
+967:           "modalities": {
+968:             "input": [
+969:               "text",
+970:               "image"
+971:             ],
+972:             "output": [
+973:               "text"
+974:             ]
+975:           },
+976:           "limit": {
+977:             "context": 400000,
+978:             "output": 128000
+979:           },
+980:           "variants": {
+981:             "none": {
+982:               "reasoningEffort": "none",
+983:               "reasoningSummary": "auto",
+984:               "textVerbosity": "medium"
+985:             },
+986:             "low": {
+987:               "reasoningEffort": "low",
+988:               "reasoningSummary": "auto",
+989:               "textVerbosity": "medium"
+990:             },
+991:             "medium": {
+992:               "reasoningEffort": "medium",
+993:               "reasoningSummary": "auto",
+994:               "textVerbosity": "medium"
+995:             },
+996:             "high": {
+997:               "reasoningEffort": "high",
+998:               "reasoningSummary": "detailed",
+999:               "textVerbosity": "medium"
+1000:             },
+1001:             "xhigh": {
+1002:               "reasoningEffort": "xhigh",
+1003:               "reasoningSummary": "detailed",
+1004:               "textVerbosity": "medium"
+1005:             }
+1006:           }
+1007:         },
+1008:         "gpt54": {
+1009:           "name": "GPT-5.4",
+1010:           "modalities": {
+1011:             "input": [
+1012:               "text",
+1013:               "image"
+1014:             ],
+1015:             "output": [
+1016:               "text"
+1017:             ]
+1018:           },
+1019:           "limit": {
+1020:             "context": 1000000,
+1021:             "output": 128000
+1022:           },
+1023:           "variants": {
+1024:             "none": {
+1025:               "reasoningEffort": "none",
+1026:               "reasoningSummary": "auto",
+1027:               "textVerbosity": "medium"
+1028:             },
+1029:             "low": {
+1030:               "reasoningEffort": "low",
+1031:               "reasoningSummary": "auto",
+1032:               "textVerbosity": "medium"
+1033:             },
+1034:             "medium": {
+1035:               "reasoningEffort": "medium",
+1036:               "reasoningSummary": "auto",
+1037:               "textVerbosity": "medium"
+1038:             },
+1039:             "high": {
+1040:               "reasoningEffort": "high",
+1041:               "reasoningSummary": "detailed",
+1042:               "textVerbosity": "medium"
+1043:             },
+1044:             "xhigh": {
+1045:               "reasoningEffort": "xhigh",
+1046:               "reasoningSummary": "detailed",
+1047:               "textVerbosity": "medium"
+1048:             }
+1049:           }
+1050:         },
+1051:         "gpt55": {
+1052:           "name": "GPT-5.5",
+1053:           "modalities": {
+1054:             "input": [
+1055:               "text",
+1056:               "image"
+1057:             ],
+1058:             "output": [
+1059:               "text"
+1060:             ]
+1061:           },
+1062:           "limit": {
+1063:             "context": 1000000,
+1064:             "output": 128000
+1065:           },
+1066:           "variants": {
+1067:             "none": {
+1068:               "reasoningEffort": "none",
+1069:               "reasoningSummary": "auto",
+1070:               "textVerbosity": "medium"
+1071:             },
+1072:             "low": {
+1073:               "reasoningEffort": "low",
+1074:               "reasoningSummary": "auto",
+1075:               "textVerbosity": "medium"
+1076:             },
+1077:             "medium": {
+1078:               "reasoningEffort": "medium",
+1079:               "reasoningSummary": "auto",
+1080:               "textVerbosity": "medium"
+1081:             },
+1082:             "high": {
+1083:               "reasoningEffort": "high",
+1084:               "reasoningSummary": "detailed",
+1085:               "textVerbosity": "medium"
+1086:             },
+1087:             "xhigh": {
+1088:               "reasoningEffort": "xhigh",
+1089:               "reasoningSummary": "detailed",
+1090:               "textVerbosity": "medium"
+1091:             }
+1092:           }
+1093:         },
+1094:         "gemini25pro": {
+1095:           "name": "Gemini 2.5 Pro",
+1096:           "modalities": {
+1097:             "input": [
+1098:               "text",
+1099:               "image"
+1100:             ],
+1101:             "output": [
+1102:               "text"
+1103:             ]
+1104:           },
+1105:           "limit": {
+1106:             "context": 1048576,
+1107:             "output": 65536
+1108:           }
+1109:         },
+1110:         "gemini25flash": {
+1111:           "name": "Gemini 2.5 Flash",
+1112:           "modalities": {
+1113:             "input": [
+1114:               "text",
+1115:               "image"
+1116:             ],
+1117:             "output": [
+1118:               "text"
+1119:             ]
+1120:           },
+1121:           "limit": {
+1122:             "context": 1048576,
+1123:             "output": 65536
+1124:           }
+1125:         },
+1126:         "gemini31flashlite": {
+1127:           "name": "Gemini 3.1 Flash Lite",
+1128:           "modalities": {
+1129:             "input": [
+1130:               "text",
+1131:               "image"
+1132:             ],
+1133:             "output": [
+1134:               "text"
+1135:             ]
+1136:           },
+1137:           "limit": {
+1138:             "context": 1048576,
+1139:             "output": 65536
+1140:           }
+1141:         },
+1142:         "gemini35flash": {
+1143:           "name": "Gemini 3.5 Flash",
+1144:           "modalities": {
+1145:             "input": [
+1146:               "text",
+1147:               "image"
+1148:             ],
+1149:             "output": [
+1150:               "text"
+1151:             ]
+1152:           },
+1153:           "limit": {
+1154:             "context": 1048576,
+1155:             "output": 65536
+1156:           }
+1157:         },
+1158:         "claudeopus48": {
+1159:           "name": "Claude Opus 4.8",
+1160:           "options": {
+1161:             "temperature": 1
+1162:           },
+1163:           "modalities": {
+1164:             "input": [
+1165:               "text",
+1166:               "image"
+1167:             ],
+1168:             "output": [
+1169:               "text"
+1170:             ]
+1171:           },
+1172:           "limit": {
+1173:             "context": 200000,
+1174:             "output": 32000
+1175:           }
+1176:         },
+1177:         "claudeopus47": {
+1178:           "name": "Claude Opus 4.7",
+1179:           "modalities": {
+1180:             "input": [
+1181:               "text",
+1182:               "image"
+1183:             ],
+1184:             "output": [
+1185:               "text"
+1186:             ]
+1187:           },
+1188:           "limit": {
+1189:             "context": 200000,
+1190:             "output": 32000
+1191:           }
+1192:         },
+1193:         "claudeopus46": {
+1194:           "name": "Claude Opus 4.6",
+1195:           "modalities": {
+1196:             "input": [
+1197:               "text",
+1198:               "image"
+1199:             ],
+1200:             "output": [
+1201:               "text"
+1202:             ]
+1203:           },
+1204:           "limit": {
+1205:             "context": 200000,
+1206:             "output": 32000
+1207:           }
+1208:         },
+1209:         "claudeopus45": {
+1210:           "name": "Claude Opus 4.5",
+1211:           "modalities": {
+1212:             "input": [
+1213:               "text",
+1214:               "image"
+1215:             ],
+1216:             "output": [
+1217:               "text"
+1218:             ]
+1219:           },
+1220:           "limit": {
+1221:             "context": 200000,
+1222:             "output": 32000
+1223:           }
+1224:         },
+1225:         "claudeopus41": {
+1226:           "name": "Claude Opus 4.1",
+1227:           "modalities": {
+1228:             "input": [
+1229:               "text",
+1230:               "image"
+1231:             ],
+1232:             "output": [
+1233:               "text"
+1234:             ]
+1235:           },
+1236:           "limit": {
+1237:             "context": 200000,
+1238:             "output": 32000
+1239:           }
+1240:         },
+1241:         "claudehaiku45": {
+1242:           "name": "Claude Haiku 4.5",
+1243:           "modalities": {
+1244:             "input": [
+1245:               "text",
+1246:               "image"
+1247:             ],
+1248:             "output": [
+1249:               "text"
+1250:             ]
+1251:           },
+1252:           "limit": {
+1253:             "context": 200000,
+1254:             "output": 8192
+1255:           }
+1256:         },
+1257:         "claudesonnet46": {
+1258:           "name": "Claude Sonnet 4.6",
+1259:           "modalities": {
+1260:             "input": [
+1261:               "text",
+1262:               "image"
+1263:             ],
+1264:             "output": [
+1265:               "text"
+1266:             ]
+1267:           },
+1268:           "limit": {
+1269:             "context": 200000,
+1270:             "output": 64000
+1271:           }
+1272:         },
+1273:         "claudesonnet45": {
+1274:           "name": "Claude Sonnet 4.5",
+1275:           "modalities": {
+1276:             "input": [
+1277:               "text",
+1278:               "image"
+1279:             ],
+1280:             "output": [
+1281:               "text"
+1282:             ]
+1283:           },
+1284:           "limit": {
+1285:             "context": 200000,
+1286:             "output": 64000
+1287:           }
+1288:         }
+1289:       }
+1290:     },
+1291:     "argo": {
+1292:       "name": "Argo Shim",
+1293:       "options": {
+1294:         "baseURL": "https://127.0.0.1:21338/argoapi/v1",
+1295:         "apiKey": "nsynovic",
+1296:         "headers": {
+1297:           "Host": "apps.inside.anl.gov",
+1298:           "Authorization": "Bearer nsynovic"
+1299:         }
+1300:       },
+1301:       "models": {
+1302:         "gpt4o": {
+1303:           "name": "GPT-4o",
+1304:           "modalities": {
+1305:             "input": [
+1306:               "text",
+1307:               "image"
+1308:             ],
+1309:             "output": [
+1310:               "text"
+1311:             ]
+1312:           },
+1313:           "limit": {
+1314:             "context": 128000,
+1315:             "output": 16384
+1316:           }
+1317:         },
+1318:         "gpto3mini": {
+1319:           "name": "o3-mini",
+1320:           "limit": {
+1321:             "context": 200000,
+1322:             "output": 100000
+1323:           }
+1324:         },
+1325:         "gpto1": {
+1326:           "name": "o1",
+1327:           "modalities": {
+1328:             "input": [
+1329:               "text",
+1330:               "image"
+1331:             ],
+1332:             "output": [
+1333:               "text"
+1334:             ]
+1335:           },
+1336:           "limit": {
+1337:             "context": 200000,
+1338:             "output": 100000
+1339:           }
+1340:         },
+1341:         "gpto3": {
+1342:           "name": "o3",
+1343:           "modalities": {
+1344:             "input": [
+1345:               "text",
+1346:               "image"
+1347:             ],
+1348:             "output": [
+1349:               "text"
+1350:             ]
+1351:           },
+1352:           "limit": {
+1353:             "context": 200000,
+1354:             "output": 100000
+1355:           }
+1356:         },
+1357:         "gpto4mini": {
+1358:           "name": "o4-mini",
+1359:           "modalities": {
+1360:             "input": [
+1361:               "text",
+1362:               "image"
+1363:             ],
+1364:             "output": [
+1365:               "text"
+1366:             ]
+1367:           },
+1368:           "limit": {
+1369:             "context": 200000,
+1370:             "output": 100000
+1371:           }
+1372:         },
+1373:         "gpt41": {
+1374:           "name": "GPT-4.1",
+1375:           "modalities": {
+1376:             "input": [
+1377:               "text",
+1378:               "image"
+1379:             ],
+1380:             "output": [
+1381:               "text"
+1382:             ]
+1383:           },
+1384:           "limit": {
+1385:             "context": 1047576,
+1386:             "output": 32768
+1387:           }
+1388:         },
+1389:         "gpt41mini": {
+1390:           "name": "GPT-4.1-mini",
+1391:           "modalities": {
+1392:             "input": [
+1393:               "text",
+1394:               "image"
+1395:             ],
+1396:             "output": [
+1397:               "text"
+1398:             ]
+1399:           },
+1400:           "limit": {
+1401:             "context": 1047576,
+1402:             "output": 32768
+1403:           }
+1404:         },
+1405:         "gpt41nano": {
+1406:           "name": "GPT-4.1-nano",
+1407:           "modalities": {
+1408:             "input": [
+1409:               "text",
+1410:               "image"
+1411:             ],
+1412:             "output": [
+1413:               "text"
+1414:             ]
+1415:           },
+1416:           "limit": {
+1417:             "context": 1047576,
+1418:             "output": 32768
+1419:           }
+1420:         },
+1421:         "gpt5": {
+1422:           "name": "GPT-5",
+1423:           "modalities": {
+1424:             "input": [
+1425:               "text",
+1426:               "image"
+1427:             ],
+1428:             "output": [
+1429:               "text"
+1430:             ]
+1431:           },
+1432:           "limit": {
+1433:             "context": 400000,
+1434:             "output": 128000
+1435:           },
+1436:           "variants": {
+1437:             "none": {
+1438:               "reasoningEffort": "none",
+1439:               "reasoningSummary": "auto",
+1440:               "textVerbosity": "medium"
+1441:             },
+1442:             "low": {
+1443:               "reasoningEffort": "low",
+1444:               "reasoningSummary": "auto",
+1445:               "textVerbosity": "medium"
+1446:             },
+1447:             "medium": {
+1448:               "reasoningEffort": "medium",
+1449:               "reasoningSummary": "auto",
+1450:               "textVerbosity": "medium"
+1451:             },
+1452:             "high": {
+1453:               "reasoningEffort": "high",
+1454:               "reasoningSummary": "detailed",
+1455:               "textVerbosity": "medium"
+1456:             },
+1457:             "xhigh": {
+1458:               "reasoningEffort": "xhigh",
+1459:               "reasoningSummary": "detailed",
+1460:               "textVerbosity": "medium"
+1461:             }
+1462:           }
+1463:         },
+1464:         "gpt5mini": {
+1465:           "name": "GPT-5-mini",
+1466:           "modalities": {
+1467:             "input": [
+1468:               "text",
+1469:               "image"
+1470:             ],
+1471:             "output": [
+1472:               "text"
+1473:             ]
+1474:           },
+1475:           "limit": {
+1476:             "context": 400000,
+1477:             "output": 128000
+1478:           },
+1479:           "variants": {
+1480:             "none": {
+1481:               "reasoningEffort": "none",
+1482:               "reasoningSummary": "auto",
+1483:               "textVerbosity": "medium"
+1484:             },
+1485:             "low": {
+1486:               "reasoningEffort": "low",
+1487:               "reasoningSummary": "auto",
+1488:               "textVerbosity": "medium"
+1489:             },
+1490:             "medium": {
+1491:               "reasoningEffort": "medium",
+1492:               "reasoningSummary": "auto",
+1493:               "textVerbosity": "medium"
+1494:             },
+1495:             "high": {
+1496:               "reasoningEffort": "high",
+1497:               "reasoningSummary": "detailed",
+1498:               "textVerbosity": "medium"
+1499:             },
+1500:             "xhigh": {
+1501:               "reasoningEffort": "xhigh",
+1502:               "reasoningSummary": "detailed",
+1503:               "textVerbosity": "medium"
+1504:             }
+1505:           }
+1506:         },
+1507:         "gpt5nano": {
+1508:           "name": "GPT-5-nano",
+1509:           "modalities": {
+1510:             "input": [
+1511:               "text",
+1512:               "image"
+1513:             ],
+1514:             "output": [
+1515:               "text"
+1516:             ]
+1517:           },
+1518:           "limit": {
+1519:             "context": 400000,
+1520:             "output": 128000
+1521:           },
+1522:           "variants": {
+1523:             "none": {
+1524:               "reasoningEffort": "none",
+1525:               "reasoningSummary": "auto",
+1526:               "textVerbosity": "medium"
+1527:             },
+1528:             "low": {
+1529:               "reasoningEffort": "low",
+1530:               "reasoningSummary": "auto",
+1531:               "textVerbosity": "medium"
+1532:             },
+1533:             "medium": {
+1534:               "reasoningEffort": "medium",
+1535:               "reasoningSummary": "auto",
+1536:               "textVerbosity": "medium"
+1537:             },
+1538:             "high": {
+1539:               "reasoningEffort": "high",
+1540:               "reasoningSummary": "detailed",
+1541:               "textVerbosity": "medium"
+1542:             },
+1543:             "xhigh": {
+1544:               "reasoningEffort": "xhigh",
+1545:               "reasoningSummary": "detailed",
+1546:               "textVerbosity": "medium"
+1547:             }
+1548:           }
+1549:         },
+1550:         "gpt51": {
+1551:           "name": "GPT-5.1",
+1552:           "modalities": {
+1553:             "input": [
+1554:               "text",
+1555:               "image"
+1556:             ],
+1557:             "output": [
+1558:               "text"
+1559:             ]
+1560:           },
+1561:           "limit": {
+1562:             "context": 400000,
+1563:             "output": 128000
+1564:           },
+1565:           "variants": {
+1566:             "none": {
+1567:               "reasoningEffort": "none",
+1568:               "reasoningSummary": "auto",
+1569:               "textVerbosity": "medium"
+1570:             },
+1571:             "low": {
+1572:               "reasoningEffort": "low",
+1573:               "reasoningSummary": "auto",
+1574:               "textVerbosity": "medium"
+1575:             },
+1576:             "medium": {
+1577:               "reasoningEffort": "medium",
+1578:               "reasoningSummary": "auto",
+1579:               "textVerbosity": "medium"
+1580:             },
+1581:             "high": {
+1582:               "reasoningEffort": "high",
+1583:               "reasoningSummary": "detailed",
+1584:               "textVerbosity": "medium"
+1585:             },
+1586:             "xhigh": {
+1587:               "reasoningEffort": "xhigh",
+1588:               "reasoningSummary": "detailed",
+1589:               "textVerbosity": "medium"
+1590:             }
+1591:           }
+1592:         },
+1593:         "gpt52": {
+1594:           "name": "GPT-5.2",
+1595:           "modalities": {
+1596:             "input": [
+1597:               "text",
+1598:               "image"
+1599:             ],
+1600:             "output": [
+1601:               "text"
+1602:             ]
+1603:           },
+1604:           "limit": {
+1605:             "context": 400000,
+1606:             "output": 128000
+1607:           },
+1608:           "variants": {
+1609:             "none": {
+1610:               "reasoningEffort": "none",
+1611:               "reasoningSummary": "auto",
+1612:               "textVerbosity": "medium"
+1613:             },
+1614:             "low": {
+1615:               "reasoningEffort": "low",
+1616:               "reasoningSummary": "auto",
+1617:               "textVerbosity": "medium"
+1618:             },
+1619:             "medium": {
+1620:               "reasoningEffort": "medium",
+1621:               "reasoningSummary": "auto",
+1622:               "textVerbosity": "medium"
+1623:             },
+1624:             "high": {
+1625:               "reasoningEffort": "high",
+1626:               "reasoningSummary": "detailed",
+1627:               "textVerbosity": "medium"
+1628:             },
+1629:             "xhigh": {
+1630:               "reasoningEffort": "xhigh",
+1631:               "reasoningSummary": "detailed",
+1632:               "textVerbosity": "medium"
+1633:             }
+1634:           }
+1635:         },
+1636:         "gpt54": {
+1637:           "name": "GPT-5.4",
+1638:           "modalities": {
+1639:             "input": [
+1640:               "text",
+1641:               "image"
+1642:             ],
+1643:             "output": [
+1644:               "text"
+1645:             ]
+1646:           },
+1647:           "limit": {
+1648:             "context": 1000000,
+1649:             "output": 128000
+1650:           },
+1651:           "variants": {
+1652:             "none": {
+1653:               "reasoningEffort": "none",
+1654:               "reasoningSummary": "auto",
+1655:               "textVerbosity": "medium"
+1656:             },
+1657:             "low": {
+1658:               "reasoningEffort": "low",
+1659:               "reasoningSummary": "auto",
+1660:               "textVerbosity": "medium"
+1661:             },
+1662:             "medium": {
+1663:               "reasoningEffort": "medium",
+1664:               "reasoningSummary": "auto",
+1665:               "textVerbosity": "medium"
+1666:             },
+1667:             "high": {
+1668:               "reasoningEffort": "high",
+1669:               "reasoningSummary": "detailed",
+1670:               "textVerbosity": "medium"
+1671:             },
+1672:             "xhigh": {
+1673:               "reasoningEffort": "xhigh",
+1674:               "reasoningSummary": "detailed",
+1675:               "textVerbosity": "medium"
+1676:             }
+1677:           }
+1678:         },
+1679:         "gpt55": {
+1680:           "name": "GPT-5.5",
+1681:           "modalities": {
+1682:             "input": [
+1683:               "text",
+1684:               "image"
+1685:             ],
+1686:             "output": [
+1687:               "text"
+1688:             ]
+1689:           },
+1690:           "limit": {
+1691:             "context": 1000000,
+1692:             "output": 128000
+1693:           },
+1694:           "variants": {
+1695:             "none": {
+1696:               "reasoningEffort": "none",
+1697:               "reasoningSummary": "auto",
+1698:               "textVerbosity": "medium"
+1699:             },
+1700:             "low": {
+1701:               "reasoningEffort": "low",
+1702:               "reasoningSummary": "auto",
+1703:               "textVerbosity": "medium"
+1704:             },
+1705:             "medium": {
+1706:               "reasoningEffort": "medium",
+1707:               "reasoningSummary": "auto",
+1708:               "textVerbosity": "medium"
+1709:             },
+1710:             "high": {
+1711:               "reasoningEffort": "high",
+1712:               "reasoningSummary": "detailed",
+1713:               "textVerbosity": "medium"
+1714:             },
+1715:             "xhigh": {
+1716:               "reasoningEffort": "xhigh",
+1717:               "reasoningSummary": "detailed",
+1718:               "textVerbosity": "medium"
+1719:             }
+1720:           }
+1721:         },
+1722:         "gemini25pro": {
+1723:           "name": "Gemini 2.5 Pro",
+1724:           "modalities": {
+1725:             "input": [
+1726:               "text",
+1727:               "image"
+1728:             ],
+1729:             "output": [
+1730:               "text"
+1731:             ]
+1732:           },
+1733:           "limit": {
+1734:             "context": 1048576,
+1735:             "output": 65536
+1736:           }
+1737:         },
+1738:         "gemini25flash": {
+1739:           "name": "Gemini 2.5 Flash",
+1740:           "modalities": {
+1741:             "input": [
+1742:               "text",
+1743:               "image"
+1744:             ],
+1745:             "output": [
+1746:               "text"
+1747:             ]
+1748:           },
+1749:           "limit": {
+1750:             "context": 1048576,
+1751:             "output": 65536
+1752:           }
+1753:         },
+1754:         "gemini31flashlite": {
+1755:           "name": "Gemini 3.1 Flash Lite",
+1756:           "modalities": {
+1757:             "input": [
+1758:               "text",
+1759:               "image"
+1760:             ],
+1761:             "output": [
+1762:               "text"
+1763:             ]
+1764:           },
+1765:           "limit": {
+1766:             "context": 1048576,
+1767:             "output": 65536
+1768:           }
+1769:         },
+1770:         "gemini35flash": {
+1771:           "name": "Gemini 3.5 Flash",
+1772:           "modalities": {
+1773:             "input": [
+1774:               "text",
+1775:               "image"
+1776:             ],
+1777:             "output": [
+1778:               "text"
+1779:             ]
+1780:           },
+1781:           "limit": {
+1782:             "context": 1048576,
+1783:             "output": 65536
+1784:           }
+1785:         },
+1786:         "claudeopus48": {
+1787:           "name": "Claude Opus 4.8",
+1788:           "options": {
+1789:             "temperature": 1
+1790:           },
+1791:           "modalities": {
+1792:             "input": [
+1793:               "text",
+1794:               "image"
+1795:             ],
+1796:             "output": [
+1797:               "text"
+1798:             ]
+1799:           },
+1800:           "limit": {
+1801:             "context": 200000,
+1802:             "output": 32000
+1803:           }
+1804:         },
+1805:         "claudeopus47": {
+1806:           "name": "Claude Opus 4.7",
+1807:           "modalities": {
+1808:             "input": [
+1809:               "text",
+1810:               "image"
+1811:             ],
+1812:             "output": [
+1813:               "text"
+1814:             ]
+1815:           },
+1816:           "limit": {
+1817:             "context": 200000,
+1818:             "output": 32000
+1819:           }
+1820:         },
+1821:         "claudeopus46": {
+1822:           "name": "Claude Opus 4.6",
+1823:           "modalities": {
+1824:             "input": [
+1825:               "text",
+1826:               "image"
+1827:             ],
+1828:             "output": [
+1829:               "text"
+1830:             ]
+1831:           },
+1832:           "limit": {
+1833:             "context": 200000,
+1834:             "output": 32000
+1835:           }
+1836:         },
+1837:         "claudeopus45": {
+1838:           "name": "Claude Opus 4.5",
+1839:           "modalities": {
+1840:             "input": [
+1841:               "text",
+1842:               "image"
+1843:             ],
+1844:             "output": [
+1845:               "text"
+1846:             ]
+1847:           },
+1848:           "limit": {
+1849:             "context": 200000,
+1850:             "output": 32000
+1851:           }
+1852:         },
+1853:         "claudeopus41": {
+1854:           "name": "Claude Opus 4.1",
+1855:           "modalities": {
+1856:             "input": [
+1857:               "text",
+1858:               "image"
+1859:             ],
+1860:             "output": [
+1861:               "text"
+1862:             ]
+1863:           },
+1864:           "limit": {
+1865:             "context": 200000,
+1866:             "output": 32000
+1867:           }
+1868:         },
+1869:         "claudehaiku45": {
+1870:           "name": "Claude Haiku 4.5",
+1871:           "modalities": {
+1872:             "input": [
+1873:               "text",
+1874:               "image"
+1875:             ],
+1876:             "output": [
+1877:               "text"
+1878:             ]
+1879:           },
+1880:           "limit": {
+1881:             "context": 200000,
+1882:             "output": 8192
+1883:           }
+1884:         },
+1885:         "claudesonnet46": {
+1886:           "name": "Claude Sonnet 4.6",
+1887:           "modalities": {
+1888:             "input": [
+1889:               "text",
+1890:               "image"
+1891:             ],
+1892:             "output": [
+1893:               "text"
+1894:             ]
+1895:           },
+1896:           "limit": {
+1897:             "context": 200000,
+1898:             "output": 64000
+1899:           }
+1900:         },
+1901:         "claudesonnet45": {
+1902:           "name": "Claude Sonnet 4.5",
+1903:           "modalities": {
+1904:             "input": [
+1905:               "text",
+1906:               "image"
+1907:             ],
+1908:             "output": [
+1909:               "text"
+1910:             ]
+1911:           },
+1912:           "limit": {
+1913:             "context": 200000,
+1914:             "output": 64000
+1915:           }
+1916:         }
+1917:       }
+1918:     }
+1919:   }
+1920: }
+
+(End of file - total 1920 lines)
+</content>
+```
+
+---
+
+## Assistant (Plan · Claude Opus 4.8 · 16.7s)
+
+I have a full picture. Here's my plan — no edits made yet (plan mode).
+
+---
+
+# Plan: register `scc-mcp` as a local MCP server in OpenCode
+
+## Findings
+- No project-local `opencode.json` exists in `/home/nicholas/Documents/projects/scc-mcp`.
+- The active config is the **global** one at `~/.config/opencode/opencode.json`, which is a **symlink into the dotfiles repo** (`Documents/projects/dotfiles/.config/opencode/opencode.json`). It already has an `mcp` block (one remote server, `paraview`).
+- The server is runnable as a console script `scc-mcp` (added to `pyproject.toml`), or via `uv run scc-mcp` / `uv run python -m scc_mcp.main`. It speaks **stdio** by default → maps to MCP `type: "local"`.
+
+## Key decision: which config to edit?
+You said "run local". There are two interpretations of *where* to register it:
+
+**Option A — project-local `opencode.json` (recommended).**
+Create `/home/nicholas/Documents/projects/scc-mcp/opencode.json` with just the MCP entry. Scoped to this repo, doesn't touch your dotfiles, and `uv run` resolves the project venv naturally since cwd is the repo.
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "scc": {
+      "type": "local",
+      "command": ["uv", "run", "scc-mcp"],
+      "enabled": true
+    }
+  }
+}
+```
+
+**Option B — global config (your dotfiles symlink).**
+Add the same `scc` entry under the existing `mcp` block at line 16-22. This edits a tracked dotfiles file and makes the server available everywhere — but `uv run scc-mcp` only works when cwd is this project (or needs `--project /abs/path`). To make it robust globally I'd use:
+`"command": ["uv", "run", "--project", "/home/nicholas/Documents/projects/scc-mcp", "scc-mcp"]`.
+
+## Command form
+- `["uv", "run", "scc-mcp"]` — relies on the console script + project venv (project config).
+- Alternative: `["uv", "run", "python", "-m", "scc_mcp.main"]` — works even without the build/script install.
+
+## After the edit
+- MCP servers load at startup and aren't hot-reloaded → you'll need to **quit and restart OpenCode** for `scc` to appear.
+- Only the `hello_world` tool is exposed currently.
+
+## Open questions
+1. **Project-local (Option A) or global dotfiles (Option B)?** I recommend A.
+2. **Command form**: `uv run scc-mcp` (needs the console script, which is installed) or the more self-contained `uv run python -m scc_mcp.main`?
+
+Let me know A or B (and command preference) and I'll make the edit.
+
+---
+
+## User
+
+Do project local
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 3.4s)
+
+**Tool: write**
+
+**Input:**
+```json
+{
+  "filePath": "/home/nicholas/Documents/projects/scc-mcp/opencode.json",
+  "content": "{\n  \"$schema\": \"https://opencode.ai/config.json\",\n  \"mcp\": {\n    \"scc\": {\n      \"type\": \"local\",\n      \"command\": [\"uv\", \"run\", \"scc-mcp\"],\n      \"enabled\": true\n    }\n  }\n}\n"
+}
+```
+
+**Output:**
+```
+Wrote file successfully.
+```
+
+---
+
+## Assistant (Build · Claude Opus 4.8 · 4.8s)
+
+Created `/home/nicholas/Documents/projects/scc-mcp/opencode.json` registering the server as a local MCP:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "scc": {
+      "type": "local",
+      "command": ["uv", "run", "scc-mcp"],
+      "enabled": true
+    }
+  }
+}
+```
+
+Notes:
+- Scoped to this project only — your global dotfiles config is untouched.
+- Launches via the `scc-mcp` console script over stdio. `uv run` resolves the project venv automatically since OpenCode runs from the repo cwd.
+- Currently exposes one tool, `hello_world`.
+
+**Restart OpenCode** for the change to take effect — MCP servers load at startup and aren't hot-reloaded. After restart, the `scc` server's `hello_world` tool should be available.
 
 ---
 
