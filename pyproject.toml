@@ -1,12 +1,28 @@
 [project]
 name = "scc-mcp"
-version = "0.1.0"
-description = "Add your description here"
+dynamic = ["version"]
+description = "MCP server exposing boyter/scc code-counting and complexity tools to LLM agents."
 readme = "README.md"
 requires-python = ">=3.14"
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Nicholas Synovic", email = "nicholas.synovic@gmail.com" },
+]
+keywords = ["mcp", "scc", "sloc", "cloc", "code-metrics", "complexity"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Quality Assurance",
+]
 dependencies = [
     "fastmcp>=3.4.2",
 ]
+
+[project.urls]
+Repository = "https://github.com/NicholasSynovic/scc-mcp"
 
 [project.scripts]
 scc-mcp = "scc_mcp.main:main"
@@ -14,6 +30,12 @@ scc-mcp = "scc_mcp.main:main"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "scc_mcp/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["scc_mcp"]
 
 [dependency-groups]
 dev = [
