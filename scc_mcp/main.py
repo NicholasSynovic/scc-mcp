@@ -1,14 +1,13 @@
-"""Minimal scc MCP server."""
+"""scc MCP server.
+
+Exposes the external ``scc`` code-counting tool as MCP tools. Tool definitions
+live here; the scc invocation/safety layer is in ``runner``, shared input models
+in ``models``, and output rendering in ``format``.
+"""
 
 from fastmcp import FastMCP
 
 mcp = FastMCP("scc_mcp")
-
-
-@mcp.tool
-def hello_world() -> str:
-    """Return a simple greeting to confirm the server is reachable."""
-    return "Hello world"
 
 
 def main() -> None:
